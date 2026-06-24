@@ -1,0 +1,28 @@
+{
+  "TK_CreateDraftDocument_001_Valid": [
+    {
+      "Description": "Verify create new draft document with attachment file success",
+      "Id": "Valid-01",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": {
+          "isFill": [],
+          "isVerify": []
+        },
+        "Summary": "Auto_VanBanDuThao_",
+        "DocumentBook": "Sổ văn bản đi cho phòng Phòng Phục Vụ Hành Khách",
+        "DistributionType": "Nội bộ",
+        "IssuingPlace": "Phòng",
+        "IssuingUnit": "Phòng Phục Vụ Hành Khách",
+        "DocumentType": "Loại VB Kiểm thử",
+        "Classification": "Ký 2 cấp",
+        "Remark": "Auto created by automation_"
+      },
+      "detail": {}
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "TK_Login_001_Valid": [
+    {
+      "Description": "Verify login successfully with valid account",
+      "Id": "Valid-01",
+      "Category": "REGRESSION",
+      "Executed": true,
+      "AccountTest": "",
+      "TestScenario": "",
+      "Preconditions": "",
+      "master": {
+        "config": {
+          "isFill": [],
+          "isVerify": []
+        },
+        "UserName": "thaonv",
+        "Password": "123"
+      },
+      "detail": {}
+    }
+  ]
+}

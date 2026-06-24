@@ -1,0 +1,17 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Soffice Regression Tests" parallel="classes" thread-count="1">
+    <test name="Login" enabled="true">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.soffice.projects.testscript.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="DraftDocument" enabled="true">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.soffice.projects.testscript.CreateDraftDocument"/>
+        </classes>
+    </test>
+</suite>
