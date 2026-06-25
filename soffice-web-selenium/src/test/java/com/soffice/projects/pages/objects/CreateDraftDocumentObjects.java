@@ -99,8 +99,13 @@ public class CreateDraftDocumentObjects extends BaseObjects {
         clickTo(findCancelBtn(), "Click Huy bo button");
     }
 
-    //Click "Cập nhật cấp ký" button to open the "Chuyển tiếp" sign-level popup
+    //Click "Cập nhật cấp ký" button to open the "Chuyển tiếp" sign-level popup.
+    //After submitting, the Angular router navigates from .../create to .../view-details/{id}.
+    //Wait for the URL to actually contain "view-details" before looking for the button,
+    //otherwise findElement() can momentarily match a stale node from the old page that the
+    //router hasn't removed yet, click it with no effect, and silently report "success".
     public void clickUpdateSignLevelBtn() {
+        getWaitDriver().until(d -> d.getCurrentUrl().contains("view-details"));
         clickTo(findUpdateSignLevelBtn(), "Click 'Cập nhật cấp ký' button");
     }
 

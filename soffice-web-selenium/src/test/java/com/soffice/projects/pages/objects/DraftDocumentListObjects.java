@@ -35,6 +35,7 @@ public class DraftDocumentListObjects extends BaseObjects {
         return findWebElement(By.xpath(locator.getAddNewBtn()));
     }
 
+
     //Find "Trích yếu" link of the first row in the result table
     public WebElement findFirstRowSummaryLink() {
         return findWebElement(By.xpath(locator.getFirstRowSummaryLink()));
@@ -68,16 +69,33 @@ public class DraftDocumentListObjects extends BaseObjects {
     }
 
     //Actions
+    //Type the search keyword directly: clear the field then sendKeys, bypassing inputText()'s
+    //isSameValueOfElement() shortcut. After navigating back to the list page by URL, the
+    //search input can retain a leftover value from a previous state; if it happens to match
+    //the new keyword by the shortcut's own (possibly loose) comparison, inputText() would skip
+    //typing entirely, silently searching with the wrong/old keyword.
     public void inputSearchKeyword(String keyword) {
-        inputText(findSearchInput(), "Tu khoa tim kiem", keyword);
+        WebElement input = findSearchInput();
+        input.clear();
+        input.sendKeys(keyword);
+        //Verify the field actually holds the new value before moving on, since Angular/DevExtreme
+        //may need a brief moment to bind the typed value before a search submit will use it.
+        getWaitDriver(5).until(d -> keyword.equals(findSearchInput().getAttribute("value")));
     }
 
+    //Click via scroll + JavaScript, consistent with SignLevelObjects, since these elements can
+    //be covered by a fixed header row or sit outside the viewport, causing
+    //ElementClickInterceptedException with a native Selenium click.
     public void clickSearchBtn() {
-        clickTo(findSearchBtn(), "Click Tim kiem button");
+        WebElement btn = findSearchBtn();
+        scrollToElement(btn);
+        clickElementViaJs(btn, "Click Tim kiem button");
     }
 
     public void clickAddNewBtn() {
-        clickTo(findAddNewBtn(), "Click to add new draft document");
+        WebElement btn = findAddNewBtn();
+        scrollToElement(btn);
+        clickElementViaJs(btn, "Click to add new draft document");
     }
 
     //Verify list page is displayed

@@ -28,6 +28,6 @@ public class SignLevelLocator extends BaseLocator {
     String chooseUserCloseBtn = chooseUserPopupWrapper + "//div[contains(@class,'dx-button') and @aria-label='Đóng']";
 
     //Nút "Lưu và chuyển duyệt" / "Hủy" ở popup "Chuyển tiếp"
-    String saveAndForwardBtn = "//span[text()='Lưu và chuyển duyệt']";
+    String saveAndForwardBtn = "//div[contains(@class,'dx-button') and contains(.,'Lưu và chuyển duyệt')]";
     String cancelForwardBtn = "//div[contains(@class,'dx-button') and contains(.,'Hủy')]";
 }

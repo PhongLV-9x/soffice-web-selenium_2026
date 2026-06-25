@@ -4,6 +4,7 @@ import com.soffice.projects.common.BasePage;
 import com.soffice.projects.pages.objects.SignLevelObjects;
 import lombok.Getter;
 import lombok.Setter;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 @Getter
@@ -39,6 +40,8 @@ public class SignLevelPage extends BasePage {
     //After this, the system navigates to "Văn bản dự thảo > Xem chi tiết" (not back to the
     //list page) - no further verification is needed here per requirement.
     public void clickSaveAndForward() {
+        JavascriptExecutor js = (JavascriptExecutor) webDriver;
+        js.executeScript("document.body.style.zoom='80%'");
         signLevelObjects.clickSaveAndForwardBtn();
     }
 }

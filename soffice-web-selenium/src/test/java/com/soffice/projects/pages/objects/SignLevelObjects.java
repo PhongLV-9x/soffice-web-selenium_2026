@@ -44,25 +44,33 @@ public class SignLevelObjects extends BaseObjects {
     }
 
     //Actions
-    //Click an element with retry on StaleElementReferenceException. The element finder is
-    //re-invoked on every attempt so a fresh WebElement is always used, since DevExtreme can
-    //re-render the DOM right between findElement() and click() (race condition), making a
-    //single re-find not always enough.
+    //Click an element with retry on Stale/ClickIntercepted exceptions. The element finder is
+    //re-invoked on every attempt so a fresh WebElement is always used (DevExtreme can re-render
+    //the DOM right between findElement() and click()). The actual click is done via JavaScript
+    //(scrollIntoView + click()) rather than a native Selenium click, because elements in these
+    //popups are frequently covered by a fixed header row or sit outside the current viewport -
+    //both cause ElementClickInterceptedException with a native click, but not with a JS click.
     private void clickWithRetry(java.util.function.Supplier<WebElement> elementFinder, String title) {
         int maxAttempts = 5;
-        org.openqa.selenium.StaleElementReferenceException lastException = null;
+        RuntimeException lastException = null;
         for (int attempt = 1; attempt <= maxAttempts; attempt++) {
             try {
-                clickTo(elementFinder.get(), title);
+                WebElement element = elementFinder.get();
+                scrollToElement(element);
+                clickElementViaJs(element, title);
                 return;
             } catch (org.openqa.selenium.StaleElementReferenceException e) {
+                lastException = e;
+            } catch (org.openqa.selenium.ElementClickInterceptedException e) {
                 lastException = e;
             }
         }
         throw lastException;
     }
 
-    //Same retry pattern, for typing text into an element instead of clicking it.
+    //Same retry pattern, for typing text into an element instead of clicking it. Typing still
+    //uses the normal inputText() (which needs the element interactable for sendKeys to work),
+    //but the click that focuses the field beforehand goes through clickWithRetry above.
     private void inputTextWithRetry(java.util.function.Supplier<WebElement> elementFinder, String title, String value) {
         int maxAttempts = 5;
         org.openqa.selenium.StaleElementReferenceException lastException = null;
@@ -95,11 +103,11 @@ public class SignLevelObjects extends BaseObjects {
         clickWithRetry(() -> findChooseBtnBySignLevel(signLevelName), "Click 'Chọn' for sign level: " + signLevelName);
     }
 
-
     //Type the username into the "Danh sách người dùng" filter input.
     //The filter input is only interactable after clicking into it first (DevExtreme filter row
-    //behavior). The popup can keep re-rendering for a short moment right after it opens, so
-    //both the click and the typing use retry-on-stale instead of a single find+act.
+    //behavior). The popup can keep re-rendering or have its filter row covered by a fixed
+    //header for a short moment right after it opens, so the click goes through clickWithRetry
+    //(scroll + JS click + retry) instead of a single native click.
     public void inputChooseUserSearchKeyword(String username) {
         clickWithRetry(this::findChooseUserSearchInput, "Click into search input before typing");
         inputTextWithRetry(this::findChooseUserSearchInput, "Tu khoa tim nguoi ky", username);
@@ -115,7 +123,11 @@ public class SignLevelObjects extends BaseObjects {
         clickWithRetry(this::findChooseUserSaveBtn, "Click 'Lưu' to confirm chosen user");
     }
 
-    //Click "Lưu và chuyển duyệt" to finalize the whole sign-level update flow
+    //Click "Lưu và chuyển duyệt" to finalize the whole sign-level update flow.
+    //The "Chuyển tiếp" popup can be larger than the viewport, so the button may be covered by
+    //another element or sit outside the visible area, causing a normal click to throw
+    //ElementClickInterceptedException. clickWithRetry already scrolls + clicks via JavaScript,
+    //which bypasses the pixel-visibility check that a native click relies on.
     public void clickSaveAndForwardBtn() {
         clickWithRetry(this::findSaveAndForwardBtn, "Click 'Lưu và chuyển duyệt'");
     }

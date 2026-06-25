@@ -77,8 +77,9 @@ public class CreateDraftDocument extends TestBase {
                 .clickSaveAndForward();
 
         DraftDocumentListPage.goToDraftDocumentListPage(homePage.getWebDriver())
+                .getInfo()
                 .searchBySummary(CreateDraftDocumentPage.currentSummary)
-                .waitForSearchResultAndGetInfo()
+                //.waitForSearchResultAndGetInfo()
                 .verifySummaryInListEquals(CreateDraftDocumentPage.currentSummary);
     }
 }
