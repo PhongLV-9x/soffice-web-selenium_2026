@@ -46,14 +46,18 @@ public class DraftDocumentListPage extends BasePage {
     }
 
 
-    private String currentSummary;
+    private String currentSummary, currentDocumentType, currentDocumentClassify, currentTypeOfIssuance, currentDocumentDate, currentCreator;
 
     //Search by summary keyword (the unique "Trích yếu" value used at creation time).
-    //Click refresh first to force the DataGrid to reload fresh data from the server before
-    //typing the keyword - the grid can otherwise hold onto a stale state from before this
-    //page navigation, causing the search to return no results even with the correct keyword.
+    //Also pulls the other expected column values (set during creation in CreateDraftDocumentPage)
+    //so verifySummaryInListEquals() can compare every column, not just "Trích yếu".
     public DraftDocumentListPage searchBySummary(String summary) {
         currentSummary = summary;
+        currentDocumentType = CreateDraftDocumentPage.currentDocumentType;
+        currentDocumentClassify = CreateDraftDocumentPage.currentDocumentClassify;
+        currentTypeOfIssuance = CreateDraftDocumentPage.currentTypeOfIssuance;
+        currentDocumentDate = CreateDraftDocumentPage.currentDocumentDate;
+        currentCreator = CreateDraftDocumentPage.currentCreator;
         draftDocumentListObjects.inputSearchKeyword(summary);
         draftDocumentListObjects.clickSearchBtn();
         DraftDocumentListPage.getWaitDriver().until(webDriver -> {
@@ -63,20 +67,15 @@ public class DraftDocumentListPage extends BasePage {
         return this;
     }
 
-    //Wait until the search result shows the matching summary, then read the row info.
-    //Uses a longer timeout (40s instead of the default 20s) because the real system can be
-    //slow or flaky right after a "Lưu và chuyển duyệt" action.
-//    public DraftDocumentListPage waitForSearchResultAndGetInfo() {
-//        getWaitDriver(40).until(webDriver1 -> {
-//            draftDocumentListObjects.getInfoFirstRow();
-//            return DraftDocumentListObjects.summaryColumn.contains(currentSummary);
-//        });
-//        return this;
-//    }
 
     //Verify the newly created draft document appears correctly in the list
-    public DraftDocumentListPage verifySummaryInListEquals(String expectedSummary) {
-        assertEqualCondition(null, expectedSummary, DraftDocumentListObjects.summaryColumn, FrameConst.FailureHandling.CONTINUE_ON_FAILURE, "Verify Trich yeu column matches the newly created document");
+    public DraftDocumentListPage verifySummaryInListEquals() {
+        assertEqualCondition(null,currentSummary, DraftDocumentListObjects.summaryColumn, FrameConst.FailureHandling.CONTINUE_ON_FAILURE,"Result does not match");
+        assertEqualCondition(null,currentDocumentType,DraftDocumentListObjects.loaiVBColumn, FrameConst.FailureHandling.CONTINUE_ON_FAILURE,"Result does not match");
+        assertEqualCondition(null,currentDocumentClassify,DraftDocumentListObjects.phanLoaiColumn, FrameConst.FailureHandling.CONTINUE_ON_FAILURE,"Result does not match");
+        assertEqualCondition(null,currentTypeOfIssuance,DraftDocumentListObjects.loaiBHColumn, FrameConst.FailureHandling.CONTINUE_ON_FAILURE,"Result does not match");
+        assertEqualCondition(null,currentDocumentDate,DraftDocumentListObjects.ngayVBColumn, FrameConst.FailureHandling.CONTINUE_ON_FAILURE,"Result does not match");
+        //assertEqualCondition(null,currentCreator,DraftDocumentListObjects.nguoiLapColumn, FrameConst.FailureHandling.CONTINUE_ON_FAILURE,"Result does not match");
         return this;
     }
 }
