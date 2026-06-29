@@ -7,6 +7,7 @@ public interface DataPath {
 
     String DATA_LOGIN = "data/" + env + "/json/loginData.json";
     String DATA_CREATE_DRAFT_DOCUMENT = "data/" + env + "/json/createDraftDocument.json";
+    String DATA_SIGN_DOCUMENT = "data/" + env + "/json/signDocument.json";
 
     /* Add more data file paths here as new test cases are implemented */
 }

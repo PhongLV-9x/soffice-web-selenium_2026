@@ -23,9 +23,9 @@ public class SignDocument extends TestBase {
                 .login("thaonv", "123");
         homePage.verifyHomePageIsDisplayed();
     }
-    @FrameAnnotation(category = {FrameConst.CategoryType.REGRESSION}, author = {AuthorType.ADMIN}, reviewer = {AuthorType.ADMIN})
-    @Test(description = "Verify creating a new draft document with an attachment file",dataProvider = "TK_CreateDraftDocument_001_Valid",
-            dataProviderClass = CreateDraftDocumentProvider.class)
+//   @FrameAnnotation(category = {FrameConst.CategoryType.REGRESSION}, author = {AuthorType.ADMIN}, reviewer = {AuthorType.ADMIN})
+//   @Test(description = "Verify creating a new draft document with an attachment file",dataProvider = "TK_CreateDraftDocument_001_Valid",
+//            dataProviderClass = CreateDraftDocumentProvider.class)
 
 }
 
