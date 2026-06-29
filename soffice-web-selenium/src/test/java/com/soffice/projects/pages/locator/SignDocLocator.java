@@ -26,5 +26,5 @@ public class SignDocLocator extends BaseLocator{
     //Van ban lien quan
     String relatedDocumentTitleEle = "//span[text()='VB liên quan']";
     //Noi dung VB lien quan
-    String relatedDocumentAreaEle = "//textarea[@id=\"dx_dx-8bdb65d7-db8d-abae-d5a9-ada9a71b727b_24ae5774-75ac-496f-185b-ac6e1e28a67d\"]";
+    String relatedDocumentAreaEle = "//textarea[@id='dx_dx-8bdb65d7-db8d-abae-d5a9-ada9a71b727b_24ae5774-75ac-496f-185b-ac6e1e28a67d']";
 }
