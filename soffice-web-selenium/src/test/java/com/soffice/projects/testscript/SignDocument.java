@@ -4,13 +4,16 @@ import com.soffice.annotations.FrameAnnotation;
 import com.soffice.consts.AuthorType;
 import com.soffice.consts.FrameConst;
 import com.soffice.projects.common.TestBase;
+import com.soffice.projects.dataprovider.model.SignDocumentModel;
 import com.soffice.projects.dataprovider.providers.CreateDraftDocumentProvider;
+import com.soffice.projects.dataprovider.providers.SignDocumentProvider;
 import com.soffice.projects.pages.PageManagement;
 import com.soffice.projects.pages.pages.HomePage;
 import lombok.Getter;
 import lombok.Setter;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 @Getter
 @Setter
 public class SignDocument extends TestBase {
@@ -23,9 +26,11 @@ public class SignDocument extends TestBase {
                 .login("thaonv", "123");
         homePage.verifyHomePageIsDisplayed();
     }
-//   @FrameAnnotation(category = {FrameConst.CategoryType.REGRESSION}, author = {AuthorType.ADMIN}, reviewer = {AuthorType.ADMIN})
-//   @Test(description = "Verify creating a new draft document with an attachment file",dataProvider = "TK_CreateDraftDocument_001_Valid",
-//            dataProviderClass = CreateDraftDocumentProvider.class)
 
+    @FrameAnnotation(category = {FrameConst.CategoryType.REGRESSION}, author = {AuthorType.ADMIN}, reviewer = {AuthorType.ADMIN})
+    @Test(description = "Verify sign a new draft document with an attachment file", dataProvider = "TK_SignDocument_001_Valid", dataProviderClass = SignDocumentProvider.class)
+    public void TK_SignDocument_001_Valid(SignDocumentModel data) {
+        homePage.verifyHomePageIsDisplayed();
+    }
 }
 
